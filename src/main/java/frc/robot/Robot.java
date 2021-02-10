@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,12 +20,15 @@ import frc.robot.RobotContainer;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+
+ // ᕕ༼ ͠ຈ Ĺ̯ ͠ຈ ༽┌∩┐
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static RobotContainer m_robotContainer;
+  private DriveSubsystem driveSubsystem = m_robotContainer.driveSubsystem;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -35,6 +39,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
+    m_robotContainer.driveSubsystem.setModePercentVoltage();
+    m_robotContainer.driveSubsystem.resetEncoders();
   }
 
   /**

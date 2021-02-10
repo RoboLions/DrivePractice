@@ -1,5 +1,6 @@
 package frc.robot;
 
+import commands.JoystickDrive;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -10,6 +11,11 @@ public class RobotContainer {
 
     public RobotContainer() {
 
+        configureButtonBindings();
+
+        driveSubsystem.setDefaultCommand(
+            new JoystickDrive(driveSubsystem)
+        );
     }
 
     private void configureButtonBindings() {

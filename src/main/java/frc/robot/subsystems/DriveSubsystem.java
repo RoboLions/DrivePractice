@@ -93,4 +93,38 @@ public class DriveSubsystem extends SubsystemBase {
   public double distanceTravelledinTicks() {
     return(getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
   }
+
+  public double getLeftEncoderVelocityMetersPerSecond() {
+    double leftVelocityMPS = (leftMotor.getSelectedSensorVelocity()*10);
+    leftVelocityMPS = leftVelocityMPS*METERS_PER_TICKS;
+    return(leftVelocityMPS);
+  }
+
+  public double getRightEncoderVelocityMetersPerSecond() {
+    double rightVelocityMPS = (rightMotor.getSelectedSensorVelocity()*10);
+    rightVelocityMPS = rightVelocityMPS*METERS_PER_TICKS;
+    return rightVelocityMPS;
+  }
+
+  public double leftDistanceTravelledinMeters() {
+    double left_dist = getLeftEncoderPosition()*METERS_PER_TICKS;
+    return left_dist;
+  }
+
+  public double rightDistanceTravelledinMeters() {
+    double right_dist = getRightEncoderPosition()*METERS_PER_TICKS;
+    return right_dist;
+  }
+
+  public double distanceTravelledinMeters() {
+    double distanceTravelled = (leftDistanceTravelledinMeters() + rightDistanceTravelledinMeters())/ 2;
+    return distanceTravelled;
+  }
+
+  public void resetEncoders() {
+    leftMotor.setSelectedSensorPosition(0);
+    rightMotor.setSelectedSensorPosition(0);
+  }
+
+
 }
