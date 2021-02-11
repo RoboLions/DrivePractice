@@ -1,7 +1,7 @@
 package frc.robot;
 
-import commands.JoystickDrive;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RobotContainer {

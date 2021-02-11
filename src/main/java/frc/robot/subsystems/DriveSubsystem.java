@@ -21,6 +21,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+
+
 public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates a new DriveSubsystem.
@@ -43,6 +46,12 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double TICKS_PER_METER = (MOTOR_ENCODER_CODES_PER_REV * GEAR_RATIO) / (WHEEL_CIRCUMFERENCE);
   private static final double METERS_PER_TICKS = 1/TICKS_PER_METER;
 
+  private static final int timeoutMs = 10;
+
+  private final PigeonIMU imu = RobotMap.drive_imu;
+
+  public boolean state_flag_motion_profile = true;
+
   public DriveSubsystem() {
     leftMotor.setNeutralMode(NeutralMode.Coast);
     rightMotor.setNeutralMode(NeutralMode.Coast);
@@ -62,6 +71,30 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotor.configVelocityMeasurementWindow(10);
     rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
   }
+
+  public double getYaw() {
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[0];
+  }
+
+  public double getPitch() {
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[0];
+  }
+
+  public double getRoll() {
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[0];
+  }
+
+  public void ZeroYaw() {
+    imu.setYaw(0, timeoutMs);
+    imu.setFusedHeading(0, timeoutMs);
+  }
+
 
   @Override
   public void periodic() {
