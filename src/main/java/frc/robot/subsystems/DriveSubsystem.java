@@ -29,8 +29,10 @@ public class DriveSubsystem extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
 
-  private static final WPI_TalonFX leftMotor = RobotMap.leftDriveMotor;
-  private static final WPI_TalonFX rightMotor = RobotMap.rightDriveMotor;
+  private static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontMotor;
+  private static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontMotor;
+  private static final WPI_TalonFX leftBackMotor = RobotMap.leftBackMotor;
+  private static final WPI_TalonFX rightBackMotor = RobotMap.rightBackMotor;
 
   private static XboxController driveController = Robot.m_robotContainer.driverController;
 
@@ -53,23 +55,65 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean state_flag_motion_profile = true;
 
   public DriveSubsystem() {
-    leftMotor.setNeutralMode(NeutralMode.Coast);
-    rightMotor.setNeutralMode(NeutralMode.Coast);
+    leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+    rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+    leftBackMotor.setNeutralMode(NeutralMode.Coast);
+    rightBackMotor.setNeutralMode(NeutralMode.Coast);
 
-    leftMotor.setInverted(false);
-    rightMotor.setInverted(true);
+    leftFrontMotor.setInverted(false);
+    rightFrontMotor.setInverted(true);
+    leftBackMotor.setInverted(false);
+    rightBackMotor.setInverted(true);
 
-    leftMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    leftMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    leftMotor.configVelocityMeasurementWindow(10);
-    leftMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
+    leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
+    leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    leftFrontMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+    leftFrontMotor.configVelocityMeasurementWindow(10);
+    leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
 
-    rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
-    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rightMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-    rightMotor.configVelocityMeasurementWindow(10);
-    rightMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
+    rightFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
+    rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightFrontMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+    rightFrontMotor.configVelocityMeasurementWindow(10);
+    rightFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
+
+    leftBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
+    leftBackMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    leftBackMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+    leftBackMotor.configVelocityMeasurementWindow(10);
+    leftBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
+
+    rightBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
+    rightBackMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightBackMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+    rightBackMotor.configVelocityMeasurementWindow(10);
+    rightBackMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5, 10);
+
+    leftFrontMotor.configNominalOutputForward(0, timeoutMs);
+    leftFrontMotor.configNominalOutputReverse(0, timeoutMs);
+    leftFrontMotor.configPeakOutputForward(1, timeoutMs);
+    leftFrontMotor.configPeakOutputReverse(-1, timeoutMs);
+
+    rightFrontMotor.configNominalOutputForward(0, timeoutMs);
+    rightFrontMotor.configNominalOutputReverse(0, timeoutMs);
+    rightFrontMotor.configPeakOutputForward(1, timeoutMs);
+    rightFrontMotor.configPeakOutputReverse(-1, timeoutMs);
+
+    rightFrontMotor.configNeutralDeadband(0.001, timeoutMs);
+    rightBackMotor.configNeutralDeadband(0.001, timeoutMs);
+    leftFrontMotor.configNeutralDeadband(0.001, timeoutMs);
+    leftBackMotor.configNeutralDeadband(0.001, timeoutMs);
+
+    leftFrontMotor.setSensorPhase(true);
+    rightFrontMotor.setSensorPhase(false);
+    leftBackMotor.setSensorPhase(true);
+    rightBackMotor.setSensorPhase(false);
+
+    leftFrontMotor.setInverted(false);
+    leftFrontMotor.setInverted(true);
+    leftBackMotor.setInverted(true);
+    leftBackMotor.setInverted(false);
+
   }
 
   public double getYaw() {
@@ -102,50 +146,66 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setModePercentVoltage() {
-    leftMotor.set(ControlMode.PercentOutput, 0);
-    rightMotor.set(ControlMode.PercentOutput, 0);
+    leftFrontMotor.set(ControlMode.PercentOutput, 0);
+    rightFrontMotor.set(ControlMode.PercentOutput, 0);
+    leftBackMotor.set(ControlMode.PercentOutput, 0);
+    rightBackMotor.set(ControlMode.PercentOutput, 0);
+
+    leftBackMotor.set(ControlMode.Follower, leftFrontMotor.getDeviceID());
+    rightBackMotor.set(ControlMode.Follower, leftFrontMotor.getDeviceID());
   }
 
   public static void drive(double throttle, double rotate) {
-    leftMotor.set(throttle + rotate);
-    rightMotor.set(throttle - rotate);
+    leftFrontMotor.set(throttle + rotate);
+    rightFrontMotor.set(throttle - rotate);
+    leftBackMotor.set(throttle + rotate);
+    rightBackMotor.set(throttle - rotate);
   }
 
   public void stop() {
     drive(0,0);
   }
 
-  public static double getLeftEncoderPosition() {
-    return leftMotor.getSelectedSensorPosition();
+  public static double getLeftFrontEncoderPosition() {
+    return leftFrontMotor.getSelectedSensorPosition();
   }
 
-  public static double getRightEncoderPosition() {
-    return rightMotor.getSelectedSensorPosition();
+  public static double getRightFrontEncoderPosition() {
+    return rightFrontMotor.getSelectedSensorPosition();
+  }
+
+  public static double getLeftBackEncoderPosition() {
+    return leftFrontMotor.getSelectedSensorPosition();
+  }
+
+  public static double getRightBackEncoderPosition() {
+    return rightFrontMotor.getSelectedSensorPosition();
   }
 
   public double distanceTravelledinTicks() {
-    return(getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
+    return(getLeftFrontEncoderPosition() + getRightFrontEncoderPosition() + getLeftBackEncoderPosition() + getRightBackEncoderPosition()) / 2;
   }
 
   public double getLeftEncoderVelocityMetersPerSecond() {
-    double leftVelocityMPS = (leftMotor.getSelectedSensorVelocity()*10);
+    double leftVelocityMPS = (leftFrontMotor.getSelectedSensorVelocity()*10);
     leftVelocityMPS = leftVelocityMPS*METERS_PER_TICKS;
     return(leftVelocityMPS);
   }
 
   public double getRightEncoderVelocityMetersPerSecond() {
-    double rightVelocityMPS = (rightMotor.getSelectedSensorVelocity()*10);
+    double rightVelocityMPS = (rightFrontMotor.getSelectedSensorVelocity()*10);
     rightVelocityMPS = rightVelocityMPS*METERS_PER_TICKS;
     return rightVelocityMPS;
   }
+  
 
   public double leftDistanceTravelledinMeters() {
-    double left_dist = getLeftEncoderPosition()*METERS_PER_TICKS;
+    double left_dist = getLeftFrontEncoderPosition()*METERS_PER_TICKS;
     return left_dist;
   }
 
   public double rightDistanceTravelledinMeters() {
-    double right_dist = getRightEncoderPosition()*METERS_PER_TICKS;
+    double right_dist = getRightFrontEncoderPosition()*METERS_PER_TICKS;
     return right_dist;
   }
 
@@ -155,8 +215,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    leftMotor.setSelectedSensorPosition(0);
-    rightMotor.setSelectedSensorPosition(0);
+    leftFrontMotor.setSelectedSensorPosition(0);
+    rightFrontMotor.setSelectedSensorPosition(0);
   }
 
 
