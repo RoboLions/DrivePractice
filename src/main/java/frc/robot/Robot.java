@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AutoPaths.AutoPath0;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,26 +26,32 @@ import frc.robot.subsystems.DriveSubsystem;
 
  // ᕕ༼ ͠ຈ Ĺ̯ ͠ຈ ༽┌∩┐
 public class Robot extends TimedRobot {
+  private Command m_autonomousCommand;
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   public static RobotContainer m_robotContainer;
   private DriveSubsystem driveSubsystem = m_robotContainer.driveSubsystem;
+
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    /*m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData("Auto choices", m_chooser);*/
     m_robotContainer = new RobotContainer();
     m_robotContainer.driveSubsystem.setModePercentVoltage();
     m_robotContainer.driveSubsystem.resetEncoders();
+    m_robotContainer.driveSubsystem.ZeroYaw();
+    m_chooser.addOption("go straight then turn", new AutoPath0(driveSubsystem));
+  
+    SmartDashboard.putData("Automonous Chooser", m_chooser);
   }
-
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -68,7 +77,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    m_autonomousCommand = m_chooser.getSelected();
+
+    if (m_autonomousCommand!= null) {
+      m_autonomousCommand.schedule();
+    }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
   }
@@ -94,6 +107,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    if (m_autonomousCommand!= null);
+      m_autonomousCommand.cancel();
   }
 
   /**
