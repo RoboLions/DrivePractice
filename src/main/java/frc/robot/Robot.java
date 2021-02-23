@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AutoPaths.Arshan;
 import frc.robot.commands.AutoPaths.AutoPath0;
+import frc.robot.commands.AutoPaths.Katie;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -49,6 +51,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.driveSubsystem.resetEncoders();
     m_robotContainer.driveSubsystem.ZeroYaw();
     m_chooser.addOption("go straight then turn", new AutoPath0(driveSubsystem));
+    m_chooser.addOption("Arshan's Path", new Arshan(driveSubsystem));
+    m_chooser.addOption("Katie's Path", new Katie(driveSubsystem));
   
     SmartDashboard.putData("Automonous Chooser", m_chooser);
   }
