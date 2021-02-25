@@ -112,8 +112,8 @@ public class DriveSubsystem extends SubsystemBase {
     
     leftFrontMotor.setInverted(false);
     rightFrontMotor.setInverted(true);
-    leftBackMotor.setInverted(true);
-    rightBackMotor.setInverted(false);
+    leftBackMotor.setInverted(false);
+    rightBackMotor.setInverted(true);
   }
 
   public double getYaw() {
@@ -157,9 +157,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public static void drive(double throttle, double rotate) {
     leftFrontMotor.set(throttle + rotate);
+    leftBackMotor.set(throttle + rotate);
     rightFrontMotor.set(throttle - rotate);
-    leftBackMotor.set(throttle - rotate);
-    rightBackMotor.set(throttle + rotate);
+    rightBackMotor.set(throttle- rotate);
   }
 
   public void stop() {
