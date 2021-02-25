@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -15,7 +15,9 @@ public class RobotMap {
     public static WPI_TalonFX leftBackMotor = new WPI_TalonFX(LEFT_BACK_PORT);
     public static WPI_TalonFX rightBackMotor = new WPI_TalonFX(RIGHT_BACK_PORT);
 
-    public static PigeonIMU arm_imu = new PigeonIMU(0);
-    public static PigeonIMU drive_imu = new PigeonIMU(1);
+    //public static WPI_TalonSRX winchMotor = new WPI_TalonSRX(12);
+
+    //public static PigeonIMU arm_imu = new PigeonIMU(0);
+    public static PigeonIMU drive_imu = new PigeonIMU(0);
 
 }

@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,12 +30,13 @@ public class JoystickDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("JOYSTICK TIME!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = driverController.getY(Hand.kLeft);
+    double throttle = -driverController.getY(Hand.kLeft);
     double rotate = driverController.getX(Hand.kRight);
 
     if ((throttle > 0 && throttle < 0.25) || (throttle < 0 && throttle > -0.25)) {
@@ -49,8 +51,6 @@ public class JoystickDrive extends CommandBase {
       rotate = rotate;
     }
 
-    rotate = 2*rotate;
-
     if (driverController.getTriggerAxis(Hand.kRight) > 0.25) {
       throttle = Math.signum(throttle)*0.75;
     } else if (driverController.getAButton()) {
@@ -58,6 +58,16 @@ public class JoystickDrive extends CommandBase {
     } else {
       throttle = throttle*0.8;
     }
+
+    SmartDashboard.putNumber("throttle", throttle);
+    SmartDashboard.putNumber("rotate", rotate);
+    SmartDashboard.putNumber("left", throttle+rotate);
+    SmartDashboard.putNumber("right", throttle-rotate);
+
+    SmartDashboard.putNumber("Front Left", driveSubsystem.leftFrontMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Front Right", driveSubsystem.rightFrontMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Back Left", driveSubsystem.leftBackMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Back Right", driveSubsystem.rightBackMotor.getSelectedSensorVelocity());
 
     driveSubsystem.drive(throttle, rotate);
   }

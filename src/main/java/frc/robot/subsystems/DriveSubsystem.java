@@ -29,10 +29,10 @@ public class DriveSubsystem extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
 
-  private static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontMotor;
-  private static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontMotor;
-  private static final WPI_TalonFX leftBackMotor = RobotMap.leftBackMotor;
-  private static final WPI_TalonFX rightBackMotor = RobotMap.rightBackMotor;
+  public static final WPI_TalonFX leftFrontMotor = RobotMap.leftFrontMotor;
+  public static final WPI_TalonFX rightFrontMotor = RobotMap.rightFrontMotor;
+  public static final WPI_TalonFX leftBackMotor = RobotMap.leftBackMotor;
+  public static final WPI_TalonFX rightBackMotor = RobotMap.rightBackMotor;
 
   private static XboxController driveController = Robot.m_robotContainer.driverController;
 
@@ -65,6 +65,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftBackMotor.setInverted(false);
     rightBackMotor.setInverted(true);
 
+    
     leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
     leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     leftFrontMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
@@ -108,12 +109,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightFrontMotor.setSensorPhase(false);
     leftBackMotor.setSensorPhase(true);
     rightBackMotor.setSensorPhase(false);
-
+    
     leftFrontMotor.setInverted(false);
-    leftFrontMotor.setInverted(true);
+    rightFrontMotor.setInverted(true);
     leftBackMotor.setInverted(true);
-    leftBackMotor.setInverted(false);
-
+    rightBackMotor.setInverted(false);
   }
 
   public double getYaw() {
@@ -151,15 +151,15 @@ public class DriveSubsystem extends SubsystemBase {
     leftBackMotor.set(ControlMode.PercentOutput, 0);
     rightBackMotor.set(ControlMode.PercentOutput, 0);
 
-    leftBackMotor.set(ControlMode.Follower, leftFrontMotor.getDeviceID());
-    rightBackMotor.set(ControlMode.Follower, leftFrontMotor.getDeviceID());
+    //leftBackMotor.set(ControlMode.Follower, leftFrontMotor.getDeviceID());
+    //rightBackMotor.set(ControlMode.Follower, rightFrontMotor.getDeviceID());
   }
 
   public static void drive(double throttle, double rotate) {
     leftFrontMotor.set(throttle + rotate);
     rightFrontMotor.set(throttle - rotate);
-    leftBackMotor.set(throttle + rotate);
-    rightBackMotor.set(throttle - rotate);
+    leftBackMotor.set(throttle - rotate);
+    rightBackMotor.set(throttle + rotate);
   }
 
   public void stop() {

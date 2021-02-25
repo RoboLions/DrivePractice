@@ -7,10 +7,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoPaths.Arshan;
 import frc.robot.commands.AutoPaths.AutoPath0;
 import frc.robot.commands.AutoPaths.Katie;
@@ -66,6 +69,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -83,7 +87,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
 
-    if (m_autonomousCommand!= null) {
+    if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
@@ -111,8 +115,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand!= null);
+    if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
   }
 
   /**
